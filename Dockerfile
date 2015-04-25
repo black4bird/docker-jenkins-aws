@@ -59,8 +59,11 @@ ONBUILD RUN mkdir -p /tmp/WEB-INF/plugins \
  && curl -L http://updates.jenkins-ci.org/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
  && cd /tmp \
  && zip -g /usr/share/jenkins/jenkins.war WEB-INF/*/* \
- && rm -rf /tmp/WEB-INF \
- && export NPM_GLOBAL_PACKAGES=`cat /tmp/npm-global-packages.list` && rm -f /tmp/npm-global-packages.list \ 
+ && rm -rf /tmp/WEB-INF 
+
+# Installing global NPM Packages
+ONBUILD RUN export NPM_GLOBAL_PACKAGES="`cat /tmp/npm-global-packages.list`" \
+ && rm -f /tmp/npm-global-packages.list \ 
  && npm install -g NPM_GLOBAL_PACKAGES
 
 ONBUILD USER jenkins 
