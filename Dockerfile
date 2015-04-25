@@ -48,14 +48,17 @@ ONBUILD ADD credentials /var/jenkins_home/.aws/credentials
 # To install a set of jenkins plugins
 ONBUILD ADD okplugins.list /tmp/okplugins.list
 ONBUILD ADD jenkins.version /tmp/jenkins.version
+ONBUILD ADD npm-global-packages.list /tmp/npm-global-packages.list
 
 # Downloading custom plugins and jenkins. Putting custom plugins into jenkins.war
 ONBUILD RUN mkdir -p /tmp/WEB-INF/plugins \
  && batch-install-jenkins-plugins.sh -p /tmp/okplugins.list -d /tmp/WEB-INF/plugins \
  && export JENKINS_VERSION=`cat /tmp/jenkins.version` && rm -f /tmp/jenkins.version \
- && curl -L http://updates.jenkins-ci.org/latest/jenkins.war -o /usr/share/jenkins/jenkins.war \
+ && curl -L http://updates.jenkins-ci.org/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
  && cd /tmp \
  && zip -g /usr/share/jenkins/jenkins.war WEB-INF/*/* \
- && rm -rf /tmp/WEB-INF
+ && rm -rf /tmp/WEB-INF \
+ && export NPM_GLOBAL_PACKAGES=`cat /tmp/npm-global-packages.list` && rm -f /tmp/npm-global-packages.list \ 
+ && npm install -g NPM_GLOBAL_PACKAGES
 
 ONBUILD USER jenkins 
