@@ -12,7 +12,7 @@ RUN apt-get update \
  && apt-get install -y wget git curl zip make subversion ruby-full python2.7 openjdk-7-jdk maven mysql-client dos2unix \
  && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
 RUN apt-get install -y nodejs
 RUN gem install sass
 
@@ -60,10 +60,5 @@ ONBUILD RUN mkdir -p /tmp/WEB-INF/plugins \
  && cd /tmp \
  && zip -g /usr/share/jenkins/jenkins.war WEB-INF/*/* \
  && rm -rf /tmp/WEB-INF 
-
-# Installing global NPM Packages
-ONBUILD RUN export NPM_GLOBAL_PACKAGES="`cat /tmp/npm-global-packages.list`" \
- && rm -f /tmp/npm-global-packages.list \ 
- && npm install -g NPM_GLOBAL_PACKAGES
 
 ONBUILD USER jenkins 
