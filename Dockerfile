@@ -50,7 +50,6 @@ ONBUILD ADD credentials /var/jenkins_home/.aws/credentials
 # To install a set of jenkins plugins
 ONBUILD ADD okplugins.list /tmp/okplugins.list
 ONBUILD ADD jenkins.version /tmp/jenkins.version
-ONBUILD ADD npm-global-packages.list /tmp/npm-global-packages.list
 
 # Downloading custom plugins and jenkins. Putting custom plugins into jenkins.war
 ONBUILD RUN mkdir -p /tmp/WEB-INF/plugins \
